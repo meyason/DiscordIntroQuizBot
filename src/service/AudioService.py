@@ -7,6 +7,7 @@ from utils.QuizRandomizer import get_random_songs
 from exception.Exception import *
 
 guild_manager = GuildManager.get_instance()
+timeup = 15
 
 async def join(interaction, num):
     if interaction.user.voice is None:
@@ -53,7 +54,7 @@ async def play(guild, url, bot):
             guild.voice_client.play(source, after=lambda e: asyncio.run_coroutine_threadsafe(next(guild, bot), bot.loop))
 
             # 30秒タイムアウト監視タスクを開始
-            asyncio.create_task(_quiz_timeout_watchdog(guild, bot, 30))
+            asyncio.create_task(_quiz_timeout_watchdog(guild, bot, timeup))
 
     except Exception as e:
         print(f"Error: {e}")

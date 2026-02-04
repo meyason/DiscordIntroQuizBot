@@ -35,15 +35,16 @@ class startCommand(commands.Cog):
             embed = discord.Embed(title="エラー",description=e,color=0xff1100)
             await interaction.followup.send(embed=embed, ephemeral=True)
             return
-        except(
-            AlreadyJoinedException
-        ) as e:
-            pass
+        
+        quiz_manager = GuildManager.get_instance().get_quiz_manager(interaction.guild.id)
+        if(quiz_manager.is_quiz_active):
+            embed = discord.Embed(title="エラー",description="すでにクイズが開始されています。",color=0xff1100)
+            await interaction.response.send_message(embed=embed, ephemeral=True)
+            return
 
         embed = discord.Embed(title="イントロクイズ開始",description=f"イントロクイズを開始しました！問題数: {length}問\n答えは{interaction.channel.mention}に入力してください！",color=0x00ff00)
         await interaction.response.send_message(embed=embed)
 
-        quiz_manager = GuildManager.get_instance().get_quiz_manager(interaction.guild.id)
         quiz_manager.start_quiz()
         await AudioService.play(interaction.guild, quiz_manager.start_quiz_song()[0], self.bot)
 

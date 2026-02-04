@@ -22,6 +22,9 @@ class QuizManager:
             return None
         self.is_question_playing = True
         return self.youtube_urls[self.current_question_index]
+    
+    def add_participant_point(self, user_id):
+        self.participant_points[user_id] += 1
 
     async def end_quiz_song(self):
         self.is_question_playing = False
@@ -36,7 +39,7 @@ class QuizManager:
         points = dict(self.participant_points)
         # 上位3名を取得
         sorted_points = sorted(points.items(), key=lambda x: x[1], reverse=True)
-        title = "クイズ終了！結果発表！\n"
+        title = "クイズ終了！結果発表！"
         embed = ""
         if(len(sorted_points) == 0):
             embed += "参加者がいませんでした。"

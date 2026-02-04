@@ -107,10 +107,13 @@ async def next(guild, bot):
     except Exception:
         return
     
-    embed = discord.Embed(title=f"第{qm.current_question_index}問", description=f"正解は: {qm.youtube_urls[qm.current_question_index - 1][1]}, {qm.youtube_urls[qm.current_question_index - 1][0]} でした！", color=0x00ff00)
+    embed = discord.Embed(title=f"第{qm.current_question_index}問", description=f"正解は: {qm.youtube_urls[qm.current_question_index - 1][1]}\n {qm.youtube_urls[qm.current_question_index - 1][0]}\n でした！", color=0x00ff00)
     await qm.target_channel.send(embed=embed)
+    
+    # 5秒待機
+    await asyncio.sleep(5)
 
-    embed = discord.Embed(title=f"第{qm.current_question_index + 1}問", description="答えを"+ qm.target_channel.mention +"に入力してください！", color=0x00ff00)
+    embed = discord.Embed(title=f"第{qm.current_question_index + 1}問", description="", color=0x00ff00)
     await qm.target_channel.send(embed=embed)
 
     # 次の問題のURLを取得して再生
